@@ -1,0 +1,117 @@
+.nightBackground{
+	background-image:url(".//nightsky.jpg");
+}
+.options{
+	positioning:fixed;
+}
+#button{
+	display:inline-block;
+	border-radius:5px;
+	background-color:#b0c4de;
+	height:30px;
+	width:140px;
+	padding:10px 2px 2px 50px;
+	border:2px solid black;
+	float:right;
+	text-decoration:none;
+}
+#background{
+	display:block;
+	
+	border-radius:5px;
+	background-color:#b0c4de;
+	height:1750px;
+	width:930px;
+	padding:0px 0px 0px 8px;
+	border:2px solid black;
+}
+#content-background{
+	display:inline-block;
+	height:350px;
+	width:840px;
+	margin:200px 0px 0px 0px;
+	color:white;
+	float:left;
+}
+h1{
+	color:Lightgreen;
+}
+a:link{
+	text-decoration:none;
+	color:black;
+}
+a:visited{
+	color:black;
+}
+.imageTop{
+	display:inline-block;
+	float:left;
+}
+.imageBottom{
+	margin-left:200px;
+}
+.problemStatement1{
+	display:none;
+	border-radius:5px;
+	background-color:#b0c4de;
+	height:600px;
+	width:930px;
+}
+.problemBackground{
+	background-image:url("/var/www/pics/backgroundimage.jpg");
+	height:700px;
+	width:5000px;
+	margin:0px 0px 0px 0px;
+}
+#hoursbox , #minutesbox , #secondsbox{
+	display:inline-block;
+	border-radius:5px;
+	background-color:#b0c4de;
+	height:30px;
+	width:40px;
+	padding:10px 2px 2px 50px;
+	border:2px solid black;
+	float:right;
+	text-decoration:none;
+	color:red;
+}
+#submitButton{
+	display:inline-block;
+	border-radius:5px;
+	background-color:#b0c4de;
+	height:30px;
+	width:100px;
+	padding:10px 2px 2px 50px;
+	border:2px solid black;
+	text-decoration:underline;
+	color:#660000;
+}
+#allProblemsBackground{
+	display:block;
+	text-decoration:underline;
+	border-radius:5px;
+	background-color:#b0c4de;
+	height:80px;
+	width:930px;
+	padding:0px 0px 0px 8px;
+	border:2px solid black;
+}
+.developers{
+	height:500px;
+	background-color:#473C8B;
+	color:white;
+	padding:1px;
+}
+.developers img{
+	border:solid black;
+}
+.gap{
+	height:150px;
+	background-color:white;	
+}
+.bottom{
+	height:170px;
+	background-color:grey;
+}
+
+
