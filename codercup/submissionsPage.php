@@ -16,7 +16,6 @@ session_start();
 				<p style = "color:orange">CHOOSE A FILE:<input type = "file" name = "filename" value = ""></p>
 				<p style = "color:orange">LANGUAGE:<input type = "radio" name = "language"  value= "C" >C
 					<input type = "radio" name = "language" value= "C++" >C++
-					<input type = "radio" name = "language" value= "java" >JAVA</p>
 				<p style = "color:orange">PROBLEM:<input type = "radio" name = "PROBLEM" value = "PROBLEM1" id = "P1">1
 					<input type = "radio" name = "PROBLEM" value = "PROBLEM2" id = "P2">2
 					<input type = "radio" name = "PROBLEM" value = "PROBLEM3" id = "P3">3
@@ -114,15 +113,20 @@ session_start();
 								 chmod("../resultFiles/$name", 0444);
 								 if('' == file_get_contents("../resultFiles/$name")){
 							        	echo"<font color= 'white'>BULLS EYE!!!!CORRECT ANSWER..........WELL DONE $uname!!!!</font>";
-									/*$sql = "UPDATE loginDetails SET SCORE1 = SCORE1 + 100 WHERE USERNAME = '$uname'";
-									$result = mysql_query($sql , $response);*/
-                                                                 }
+									$sql = "UPDATE loginDetails SET SCORE1 = SCORE1 + 100 WHERE USERNAME = '$uname' AND SCORE1 = 0";
+
+									$result = mysql_query($sql , $response);
+									$sql = "UPDATE loginDetails SET TOTALSCORE = SCORE1 + SCORE2 + SCORE3 + SCORE4 WHERE USERNAME = '$uname'";
+									$result = mysql_query($sql , $response);
+									
+                                 }
 								 else{
-								 	echo "<font color= 'red'>SORRY WRONG ANSWER!!!!!</font>";
+								 	echo "<font color= 'black'>SORRY WRONG ANSWER!!!!!</font>";
 									exec($deleteFromSubmittedCodes);
 								 	exec($deleteFromCompiledFiles);
 								 	exec($deleteFromExecutables);
 								 	exec($deleteFromOutputs);
+									exec($deleteFromResultFiles);
 									exit(-1);
 								 }	 
 								 exec($deleteFromSubmittedCodes);
@@ -182,6 +186,7 @@ session_start();
 								 	exec($deleteFromCompiledFiles);
 								 	exec($deleteFromExecutables);
 								 	exec($deleteFromOutputs);
+									exec($deleteFromResultFiles);
 									exit(-1);
 								   }	 
 								   exec($deleteFromSubmittedCodes);//delete all files to prevent DOS
@@ -194,7 +199,69 @@ session_start();
 							}
 							break;
 					case "PROBLEM2":switch($_POST["language"]){
-							case "C":
+							case "C":$name = time();
+								 $name = $name.".c";
+								 $targetDirectory = "../submittedcodes/";
+								 $targetFile = $targetDirectory . basename($name);
+								 if(move_uploaded_file($_FILES["filename"]["tmp_name"] , $targetDirectory.$name)){
+										echo "<script>alert('file uploaded successfully')</script>";	
+								 }
+								 $codeFileName = $name;
+								 $compiledFile = basename($name);
+								 chmod($targetFile , 0444);
+					  			 $compiledFilesDirectory = "../compiledFiles/";
+					 			 $compiledFile = $compiledFilesDirectory.basename($compiledFile);
+								 $pathToCompiledFiles = "../compiledFiles";
+								 $pathToSubmittedCodes = "../submittedcodes/$name";
+								 $pathToExecutables = "../executables/$name";
+								 $pathToInputFiles = "../inputFiles";
+								 $pathToOutputFiles = "../outputs";
+								 $pathToExpectedOutputs = "../expectedOutputs";
+								 $pathToResult = "../resultFiles";
+								 $pathToScoreFiles = "../users/";
+								 $scoreFile = $pathToScoreFile.basename($_POST["username"]."php");
+								 exec("gcc $pathToSubmittedCodes -o $pathToExecutables 2> $compiledFile");
+								 chmod($compiledFile,0111);
+								 $deleteFromSubmittedCodes = "rm ../submittedcodes/$name";
+								 $deleteFromCompiledFiles = "rm ../compiledFiles/$name";
+								 $deleteFromExecutables = "rm ../executables/$name";
+								 $deleteFromOutputs = "rm ../outputs/$name";	
+								 $deleteFromResultFiles = "rm ../resultFiles/$name";
+								 $lines = file($compiledFile);
+								 foreach($lines as $line){
+								 	if(strpos($line , "error") !== false){
+							         		echo "<font color= 'red'>COMPILATION ERROR!!!!!</font>";
+										exec($deleteFromSubmittedCodes);
+								 		exec($deleteFromCompiledFiles);
+								 		exec($deleteFromExecutables);
+										exit(1);
+							         	} 
+								 }
+								 exec("$pathToExecutables < $pathToInputFiles/inputFile2 > ../outputs/$name");
+								 chmod($pathToExecutables , 0444);
+								 chmod("../outputs/$name" , 0444);
+							 	 $cmd = "diff ../outputs/$name ../expectedOutputs/secondOutput >  ../resultFiles/$name";
+								 exec($cmd);
+								 chmod("../resultFiles/$name", 0444);
+								 if('' == file_get_contents("../resultFiles/$name")){
+							        	echo"<font color= 'white'>BULLS EYE!!!!CORRECT ANSWER..........WELL DONE $uname!!!!</font>";
+									$sql = "UPDATE loginDetails SET SCORE1 = SCORE1 + 100 WHERE USERNAME = '$uname' AND SCORE1 = 0";
+									$result = mysql_query($sql , $response);
+                                 }
+								 else{
+								 	echo "<font color= 'black'>SORRY WRONG ANSWER!!!!!</font>";
+									exec($deleteFromSubmittedCodes);
+								 	exec($deleteFromCompiledFiles);
+								 	exec($deleteFromExecutables);
+								 	exec($deleteFromOutputs);
+									exec($deleteFromResultFiles);
+									exit(-1);
+								 }	 
+								 exec($deleteFromSubmittedCodes);
+								 exec($deleteFromCompiledFiles);
+								 exec($deleteFromExecutables);
+								 exec($deleteFromOutputs);
+								 exec($deleteFromResultFiles);
 								 break;
 							case "C++":break;
 							case "JAVA":break;
